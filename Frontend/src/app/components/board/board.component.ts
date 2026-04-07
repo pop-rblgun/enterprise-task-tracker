@@ -48,6 +48,12 @@ import { selectAllTasks, selectUndoAvailable } from '../../store/tasks.selectors
             (cdkDropListDropped)="drop($event, col.status)"
             class="task-list">
             
+            <!-- Skeleton Loader -->
+            <ng-container *ngIf="isLoading()">
+              <div *ngFor="let i of [1,2,3]" class="skeleton-card"></div>
+            </ng-container>
+
+            <!-- Real Tasks -->
             <mat-card *ngFor="let task of getTasksByStatus(col.status)" cdkDrag class="task-card">
               <mat-card-header>
                 <mat-card-title>{{task.title}}</mat-card-title>
@@ -55,9 +61,9 @@ import { selectAllTasks, selectUndoAvailable } from '../../store/tasks.selectors
               </mat-card-header>
               <mat-card-content>
                 <p>{{task.description}}</p>
-                <mat-chip-set>
-                  <mat-chip [ngClass]="getPriorityClass(task.priority)">{{task.priority}}</mat-chip>
-                </mat-chip-set>
+                <div class="card-footer">
+                  <span class="priority-tag" [ngClass]="getPriorityClass(task.priority)">{{task.priority}}</span>
+                </div>
               </mat-card-content>
             </mat-card>
           </div>
@@ -81,14 +87,34 @@ import { selectAllTasks, selectUndoAvailable } from '../../store/tasks.selectors
     ::ng-deep .task-card mat-card-title { font-size: 1.05rem; font-weight: 600; color: #1d1d1f; margin-bottom: 4px; letter-spacing: -0.01em; }
     ::ng-deep .task-card mat-card-content p { font-size: 0.9rem; color: #5e5e60; margin-bottom: 12px; line-height: 1.4; }
     .jira-key { font-size: 0.7rem; font-weight: 600; background: rgba(0, 113, 227, 0.1); color: #0071e3; padding: 4px 8px; border-radius: 6px; display: inline-block; position: absolute; top: 12px; right: 12px; }
-    .low { background: #f5f5f7 !important; color: #5e5e60 !important; font-weight: 500; border: 1px solid #e5e5ea; }
-    .medium { background: rgba(0, 113, 227, 0.1) !important; color: #0071e3 !important; font-weight: 600; }
-    .high { background: rgba(255, 59, 48, 0.1) !important; color: #ff3b30 !important; font-weight: 600; }
-    .critical { background: #ff3b30 !important; color: white !important; font-weight: 600; box-shadow: 0 2px 8px rgba(255, 59, 48, 0.3); }
+    .skeleton-card {
+      height: 120px;
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: skeleton-pulse 1.5s infinite linear;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    @keyframes skeleton-pulse {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .priority-tag {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .low { background: #f5f5f7 !important; color: #5e5e60 !important; border: 1px solid #e5e5ea; }
+    .medium { background: rgba(0, 113, 227, 0.1) !important; color: #0071e3 !important; }
+    .high { background: rgba(255, 59, 48, 0.1) !important; color: #ff3b30 !important; }
+    .critical { background: #ff3b30 !important; color: white !important; box-shadow: 0 2px 8px rgba(255, 59, 48, 0.3); }
   `]
 })
 export class BoardComponent implements OnInit {
   private store = inject(Store);
+  isLoading = signal(true);
   projectId!: number;
   tasks = this.store.selectSignal(selectAllTasks);
   undoAvailable = this.store.selectSignal(selectUndoAvailable);
@@ -117,6 +143,9 @@ export class BoardComponent implements OnInit {
     this.signalR.taskCreated$.subscribe(task => this.store.dispatch(TasksActions.taskCreatedViaSignalR({ task })));
     this.signalR.taskUpdated$.subscribe(task => this.store.dispatch(TasksActions.taskUpdatedViaSignalR({ task })));
     this.signalR.taskDeleted$.subscribe(taskId => this.store.dispatch(TasksActions.taskDeletedViaSignalR({ taskId })));
+
+    // Simulate loading delay for skeleton demo
+    setTimeout(() => this.isLoading.set(false), 1500);
   }
 
   loadTasks() {
