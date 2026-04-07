@@ -14,6 +14,16 @@
 
 ---
 
+## 📂 Проектная аналитика (Для Портфолио)
+
+В проект включена детальная профессиональная документация, покрывающая ключевые аналитические роли:
+
+*   **[Бизнес-аналитика (BA)](docs/business-analysis/process-flow.md)**: Жизненный цикл задачи (BPMN), бизнес-правила и маппинг ролей пользователей.
+*   **[Системная аналитика (SA)](docs/system-analysis/database-schema.md)**: Mermaid ER-диаграммы, словарь данных (Data Dictionary) и **[Спецификации API](docs/system-analysis/api-spec.md)**.
+*   **[BI и Большие данные (Big Data)](docs/analytics/dashboard-design.md)**: Определение KPI (Cycle Time, Lead Time), концепты дашбордов и архитектура масштабирования (Kafka/Spark/Hadoop).
+
+---
+
 ## 🔥 Killer Features (Для Портфолио)
 1. **Undo/Redo Engine**: Управление сложным состоянием реализовано через **NgRx**. Это позволяет перемещать задачи и мгновенно отменять действие (<kbd>Ctrl+Z</kbd> паттерн).
 2. **Real-Time Collaboration Dashboard**: Благодаря **SignalR**, изменения мгновенно отображаются у всей команды без перезагрузки страницы (как в современных "Shared Whiteboards").

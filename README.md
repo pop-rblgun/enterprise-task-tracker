@@ -12,6 +12,16 @@ This project is a high-performance clone of leading enterprise tracking tools (l
 
 ---
 
+## 📂 Project Analysis (Portfolio Focus)
+
+This project includes detailed professional documentation covering multiple analytical roles:
+
+*   **[Business Analysis](docs/business-analysis/process-flow.md)**: Task lifecycles (BPMN), Business Rules, and User Role mapping.
+*   **[System Analysis](docs/system-analysis/database-schema.md)**: Mermaid ER-Diagrams, Data Dictionary, and **[API Specifications](docs/system-analysis/api-spec.md)**.
+*   **[Analytics & BI Strategy](docs/analytics/dashboard-design.md)**: KPI definitions (Cycle Time, Lead Time), Dashboard concepts, and Big Data scaling architecture (Kafka/Spark/Hadoop).
+
+---
+
 ## 🏗️ Architecture
 
 1. **Presentation Layer (Frontend)**: 
